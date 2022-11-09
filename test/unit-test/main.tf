@@ -65,6 +65,7 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_m
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
+  # checkov:skip=CKV_AWS_107: "Limiting required permissions"
   statement {
     sid    = "AllowLambdaToCreateLogGroup"
     effect = "Allow"
@@ -129,12 +130,6 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
     effect    = "Allow"
     resources = ["*"]
     actions   = ["kms:Decrypt"]
-  }
-  statement {
-    sid       = "AllowAssumeInstanceSchedulerRole"
-    effect    = "Allow"
-    resources = ["*"]
-    actions   = ["sts:AssumeRole"]
   }
 }
 
