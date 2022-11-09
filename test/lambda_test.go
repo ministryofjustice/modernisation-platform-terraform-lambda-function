@@ -18,7 +18,9 @@ func TestS3Creation(t *testing.T) {
 
 	terraform.InitAndApply(t, terraformOptions)
 
-	exampleName := terraform.Output(t, terraformOptions, "example_name")
+	functionName := terraform.Output(t, terraformOptions, "function_name")
+	resultCode := terraform.Output(t, terraformOptions, "result_code")
 
-	assert.Regexp(t, regexp.MustCompile(`^example-name*`), exampleName)
+	assert.Regexp(t, regexp.MustCompile(`^instance-scheduler-lambda-function*`), functionName)
+	assert.Regexp(t, regexp.MustCompile(`^200*`), resultCode)
 }

@@ -1,7 +1,8 @@
 # This data sources allows us to get the Modernisation Platform account information for use elsewhere
 # (when we want to assume a role in the MP, for instance)
 data "aws_organizations_organization" "root_account" {}
-
+data "aws_region" "current_region" {}
+data "aws_caller_identity" "current" {}
 # Get the environments file from the main repository
 data "http" "environments_file" {
   url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.application_name}.json"
@@ -22,7 +23,7 @@ locals {
 
   # Merge tags from the environment json file with additional ones
   tags = merge(
-    jsondecode(data.http.environments_file.body).tags,
+    jsondecode(data.http.environments_file.response_body).tags,
     { "is-production" = local.is-production },
     { "environment-name" = terraform.workspace },
     { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
