@@ -76,7 +76,7 @@ variable "environment_variables" {
 }
 
 variable "package_type" {
-  description = "The Lambda deployment package type. Valid options: Zip or Image"
+  description = "The Lambda deployment package type. Valid options: Image"
   type        = string
   default     = "Image"
 }
