@@ -130,4 +130,23 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
     resources = ["*"]
     actions   = ["kms:Decrypt"]
   }
+  statement {
+    sid       = "AllowAssumeInstanceSchedulerRole"
+    effect    = "Allow"
+    resources = ["*"]
+    actions   = ["sts:AssumeRole"]
+  }
+}
+
+data "aws_lambda_invocation" "example" {
+  function_name = module.module_test.lambda_function_name
+
+  input = jsonencode(
+    {
+      action = "Test"
+  })
+}
+
+output "result_entry" {
+  value = data.aws_lambda_invocation.example.result
 }
