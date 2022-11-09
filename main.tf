@@ -56,13 +56,11 @@ resource "aws_iam_role_policy_attachment" "policy_arns" {
   policy_arn = var.policy_arns[count.index]
 }
 
-#tfsec:ignore:aws-vpc-no-public-ingress-sgr
-resource "aws_lambda_function" "this" {
+resource "aws_lambda_function" "this" { #tfsec:ignore:aws-lambda-enable-tracing
   #checkov:skip=CKV_AWS_116
   #checkov:skip=CKV_AWS_117
   #checkov:skip=CKV_AWS_272 "Code signing not required"
   #checkov:skip=CKV_AWS_173 "These lambda envvars aren't sensitive and don't need a cmk. Default AWS KMS key is sufficient"
-  #tfsec:ignore:aws-lambda-enable-tracing
   function_name                  = var.function_name
   description                    = var.description
   reserved_concurrent_executions = var.reserved_concurrent_executions
