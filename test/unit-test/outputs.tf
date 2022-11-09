@@ -7,5 +7,5 @@ output "function_name" {
 }
 
 output "result_code" {
-  value = jsondecode(data.aws_lambda_invocation.test_invocation.result)["statusCode"]
+  value = jsondecode(aws_lambda_invocation.test_invocation.result)["statusCode"]
 }

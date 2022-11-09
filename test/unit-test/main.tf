@@ -138,7 +138,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
   }
 }
 
-data "aws_lambda_invocation" "test_invocation" {
+resource "aws_lambda_invocation" "test_invocation" {
   function_name = module.module_test.lambda_function_name
 
   input = jsonencode(
