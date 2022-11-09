@@ -69,13 +69,13 @@ resource "aws_lambda_function" "this" { #tfsec:ignore:aws-lambda-enable-tracing
   role                           = var.create_role ? aws_iam_role.this[0].arn : var.lambda_role
   timeout                        = var.timeout
   dynamic "tracing_config" {
-    for_each = can(var.tracing_mode) ? [] : [1]
+    for_each = var.tracing_mode != null ? [1] : []
     content {
       mode = var.tracing_mode
     }
   }
   dynamic "environment" {
-    for_each = length(keys(var.environment_variables)) == 0 ? [] : [1]
+    for_each = length(keys(var.environment_variables)) > 0 ? [1] : []
     content {
       variables = var.environment_variables
     }
