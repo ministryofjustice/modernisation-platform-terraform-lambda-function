@@ -96,7 +96,7 @@ variable "timeout" {
 variable "tracing_mode" {
   description = "Tracing mode of the Lambda Function. Valid value can be either PassThrough or Active."
   type        = string
-  default     = null
+  default     = "Active"
 }
 variable "tags" {
   type        = map(string)
