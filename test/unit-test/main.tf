@@ -138,15 +138,11 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
   }
 }
 
-data "aws_lambda_invocation" "example" {
+data "aws_lambda_invocation" "test_invocation" {
   function_name = module.module_test.lambda_function_name
 
   input = jsonencode(
     {
       action = "Test"
   })
-}
-
-output "result_entry" {
-  value = data.aws_lambda_invocation.example.result
 }
