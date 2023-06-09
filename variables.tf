@@ -112,3 +112,9 @@ variable "allowed_triggers" {
   type        = map(any)
   default     = {}
 }
+
+variable "memory_size" {
+  description = "Amount of memory in MB your Lambda Function can use at runtime"
+  type        = number
+  default     = 128
+}
