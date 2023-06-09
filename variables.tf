@@ -107,6 +107,12 @@ variable "application_name" {
   description = "Name of application"
 }
 
+variable "allowed_triggers" {
+  description = "Map of allowed triggers to create Lambda permissions"
+  type        = map(any)
+  default     = {}
+}
+
 variable "memory_size" {
   description = "Amount of memory in MB your Lambda Function can use at runtime"
   type        = number
