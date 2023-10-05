@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
       "logs:CreateLogGroup"
     ]
     resources = [
-      format("arn:aws:logs:eu-west-2:%s:*", data.aws_caller_identity.current.account_id)
+      format("arn:aws:logs:eu-west-2:%s:aws/lambda/fake", data.aws_caller_identity.current.account_id)
     ]
   }
   statement {
