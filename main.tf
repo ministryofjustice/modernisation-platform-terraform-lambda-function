@@ -44,7 +44,7 @@ resource "aws_iam_policy" "policy_from_json" {
 }
 
 resource "aws_iam_role_policy_attachment" "policy_from_json" {
-  count      = var.create_role && can(var.policy_json) ? 1 : 0
+  count      = var.create_role && var.policy_json_attached ? 1 : 0
   role       = aws_iam_role.this[0].name
   policy_arn = aws_iam_policy.policy_from_json[0].arn
 }
