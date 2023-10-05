@@ -5,6 +5,7 @@ module "module_test" {
   tags                           = local.tags
   description                    = "test lambda"
   role_name                      = "InstanceSchedulerLambdaFunctionPolicy"
+  policy_json_attached           = true
   policy_json                    = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
   function_name                  = "instance-scheduler-lambda-function"
   create_role                    = true
@@ -130,6 +131,20 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
     effect    = "Allow"
     resources = ["*"]
     actions   = ["kms:Decrypt"]
+  }
+  statement {
+    sid    = "s3Access"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:ListBucket",
+      "s3:GetBucketLocation"
+    ]
+    resources = [
+      "${module.s3-bucket.bucket.arn}/*",
+      "${module.s3-bucket.bucket.arn}"
+    ]
   }
 }
 
