@@ -5,6 +5,7 @@ module "module_test" {
   tags                           = local.tags
   description                    = "test lambda"
   role_name                      = "InstanceSchedulerLambdaFunctionPolicy"
+  policy_json_attached           = true
   policy_json                    = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
   function_name                  = "instance-scheduler-lambda-function"
   create_role                    = true
@@ -73,7 +74,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
       "logs:CreateLogGroup"
     ]
     resources = [
-      format("arn:aws:logs:eu-west-2:%s:*", data.aws_caller_identity.current.account_id)
+      format("arn:aws:logs:eu-west-2:%s:aws/lambda/fake", data.aws_caller_identity.current.account_id)
     ]
   }
   statement {
@@ -125,11 +126,26 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
   }
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_109: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
   statement {
     sid       = "AllowToDecryptKMS"
     effect    = "Allow"
     resources = ["*"]
     actions   = ["kms:Decrypt"]
+  }
+  statement {
+    sid    = "s3Access"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:ListBucket",
+      "s3:GetBucketLocation"
+    ]
+    resources = [
+      "${module.s3-bucket.bucket.arn}/*",
+      "${module.s3-bucket.bucket.arn}"
+    ]
   }
 }
 

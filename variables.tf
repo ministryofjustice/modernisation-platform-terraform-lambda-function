@@ -118,3 +118,11 @@ variable "memory_size" {
   type        = number
   default     = 128
 }
+
+variable "policy_json_attached" {
+
+  description = "A json policy document is being passed into the module"
+  type        = bool
+  default     = false
+
+}

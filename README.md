@@ -92,6 +92,7 @@ No modules.
 | <a name="input_package_type"></a> [package\_type](#input\_package\_type) | The Lambda deployment package type. Valid options: Image | `string` | `"Image"` | no |
 | <a name="input_policy_arns"></a> [policy\_arns](#input\_policy\_arns) | List of policy statements ARN to attach to Lambda Function role | `list(string)` | `[]` | no |
 | <a name="input_policy_json"></a> [policy\_json](#input\_policy\_json) | An policy document as JSON to attach to the Lambda Function role | `string` | `null` | no |
+| <a name="input_policy_json_attached"></a> [policy\_json\_attached](#input\_policy\_json\_attached) | A json policy document is being passed into the module | `bool` | `false` | no |
 | <a name="input_policy_name"></a> [policy\_name](#input\_policy\_name) | IAM policy name. It override the default value, which is the same as role\_name | `string` | `null` | no |
 | <a name="input_reserved_concurrent_executions"></a> [reserved\_concurrent\_executions](#input\_reserved\_concurrent\_executions) | The amount of reserved concurrent executions for this Lambda Function. A value of 0 disables Lambda Function from being triggered and -1 removes any concurrency limitations. Defaults to Unreserved Concurrency Limits -1. | `number` | `-1` | no |
 | <a name="input_role_description"></a> [role\_description](#input\_role\_description) | Description of IAM role to use for Lambda Function | `string` | `null` | no |
