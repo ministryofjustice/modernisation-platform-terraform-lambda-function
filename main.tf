@@ -93,3 +93,23 @@ resource "aws_lambda_permission" "allowed_triggers" {
   principal    = try(each.value.principal, format("%s.amazonaws.com", try(each.value.service, "")))
   source_arn   = try(each.value.source_arn, null)
 }
+
+resource "aws_lambda_function_event_invoke_config" "this" {
+  count = var.sns_topic_on_success == "" && var.sns_topic_on_failure == "" ? 0 : 1
+  function_name = aws_lambda_function.this.function_name
+
+  destination_config {
+    dynamic "on_failure" {
+      for_each = var.sns_topic_on_failure != "" ? [1] : []
+      content {
+        destination = var.sns_topic_on_failure
+      }
+    }
+    dynamic "on_success" {
+      for_each = var.sns_topic_on_success != "" ? [1] : []
+      content {
+        destination = var.sns_topic_on_success
+      }
+    }
+  }
+}
