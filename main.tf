@@ -95,7 +95,7 @@ resource "aws_lambda_permission" "allowed_triggers" {
 }
 
 resource "aws_lambda_function_event_invoke_config" "this" {
-  count = var.sns_topic_on_success == "" && var.sns_topic_on_failure == "" ? 0 : 1
+  count         = var.sns_topic_on_success == "" && var.sns_topic_on_failure == "" ? 0 : 1
   function_name = aws_lambda_function.this.function_name
 
   destination_config {
