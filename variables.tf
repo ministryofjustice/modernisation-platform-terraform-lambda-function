@@ -128,13 +128,13 @@ variable "policy_json_attached" {
 }
 
 variable "sns_topic_on_failure" {
-  description = "A json policy document is being passed into the module"
+  description = "SNS topic arn for the lambda's destination on failure."
   type        = string
   default     = ""
 }
 
 variable "sns_topic_on_success" {
-  description = "A json policy document is being passed into the module"
+  description = "SNS topic arn for the lambda's destination on success."
   type        = string
   default     = ""
 }
