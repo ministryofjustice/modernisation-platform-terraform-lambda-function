@@ -98,10 +98,12 @@ variable "tracing_mode" {
   type        = string
   default     = null
 }
+
 variable "tags" {
   type        = map(string)
   description = "Common tags to be used by all resources"
 }
+
 variable "application_name" {
   type        = string
   description = "Name of application"
@@ -120,9 +122,19 @@ variable "memory_size" {
 }
 
 variable "policy_json_attached" {
-
   description = "A json policy document is being passed into the module"
   type        = bool
   default     = false
+}
 
+variable "sns_topic_on_failure" {
+  description = "SNS topic arn for the lambda's destination on failure."
+  type        = string
+  default     = ""
+}
+
+variable "sns_topic_on_success" {
+  description = "SNS topic arn for the lambda's destination on success."
+  type        = string
+  default     = ""
 }
