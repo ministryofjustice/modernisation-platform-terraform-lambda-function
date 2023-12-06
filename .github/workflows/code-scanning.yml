@@ -32,10 +32,14 @@ jobs:
         name: Setup TFLint
         with:
           tflint_version: v0.47.0
+          tflint_wrapper: true
       - name: Init TFLint
-        run: tflint --init
+        run: tflint --init --chdir=./
       - name: Run TFLint
-        run: tflint --disable-rule=terraform_unused_declarations --chdir=./ --recursive --format sarif > tflint.sarif
+        run: tflint --disable-rule=terraform_unused_declarations --chdir=./ --format sarif > tflint.sarif
+      - run: echo ${{ steps.tflint.outputs.stdout }}
+      - run: echo ${{ steps.tflint.outputs.stderr }}
+      - run: echo ${{ steps.tflint.outputs.exitcode }}
       - name: Upload SARIF file
         if: success() || failure()
         uses: github/codeql-action/upload-sarif@cdcdbb579706841c47f7063dda365e292e5cad7a # v2.13.4
