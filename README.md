@@ -96,8 +96,8 @@ No modules.
 | <a name="input_reserved_concurrent_executions"></a> [reserved\_concurrent\_executions](#input\_reserved\_concurrent\_executions) | The amount of reserved concurrent executions for this Lambda Function. A value of 0 disables Lambda Function from being triggered and -1 removes any concurrency limitations. Defaults to Unreserved Concurrency Limits -1. | `number` | `-1` | no |
 | <a name="input_role_description"></a> [role\_description](#input\_role\_description) | Description of IAM role to use for Lambda Function | `string` | `null` | no |
 | <a name="input_role_name"></a> [role\_name](#input\_role\_name) | Name of IAM role to use for Lambda Function | `string` | `null` | no |
-| <a name="input_sns_topic_on_failure"></a> [sns\_topic\_on\_failure](#input\_sns\_topic\_on\_failure) | A json policy document is being passed into the module | `string` | `""` | no |
-| <a name="input_sns_topic_on_success"></a> [sns\_topic\_on\_success](#input\_sns\_topic\_on\_success) | A json policy document is being passed into the module | `string` | `""` | no |
+| <a name="input_sns_topic_on_failure"></a> [sns\_topic\_on\_failure](#input\_sns\_topic\_on\_failure) | SNS topic arn for the lambda's destination on failure. | `string` | `""` | no |
+| <a name="input_sns_topic_on_success"></a> [sns\_topic\_on\_success](#input\_sns\_topic\_on\_success) | SNS topic arn for the lambda's destination on success. | `string` | `""` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Common tags to be used by all resources | `map(string)` | n/a | yes |
 | <a name="input_timeout"></a> [timeout](#input\_timeout) | The amount of time your Lambda Function has to run in seconds. | `number` | `3` | no |
 | <a name="input_tracing_mode"></a> [tracing\_mode](#input\_tracing\_mode) | Tracing mode of the Lambda Function. Valid value can be either PassThrough or Active. | `string` | `null` | no |
