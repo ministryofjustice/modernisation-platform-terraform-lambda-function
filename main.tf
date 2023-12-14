@@ -81,6 +81,13 @@ resource "aws_lambda_function" "this" { #tfsec:ignore:aws-lambda-enable-tracing
       variables = var.environment_variables
     }
   }
+  dynamic "vpc_config" {
+    for_each = var.vpc_subnet_ids != null && var.vpc_security_group_ids != null ? [true] : []
+    content {
+      security_group_ids = var.vpc_security_group_ids
+      subnet_ids         = var.vpc_subnet_ids
+    }
+  }
 }
 
 resource "aws_lambda_permission" "allowed_triggers" {
