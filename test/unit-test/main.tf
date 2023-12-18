@@ -31,22 +31,22 @@ module "module_test" {
 }
 
 module "module_lambda_vpc_test" {
-  source                 = "../../"
-  application_name       = local.application_name
-  description            = "vpc attached test lambda"
-  package_type           = "Zip"
-  filename               = data.archive_file.lambda-zip
-  source_code_hash       = data.archive_file.lambda-zip.output_base64sha256
-  tags                   = local.tags
-  function_name          = "vpc-attached-lambda-function"
-  create_role            = true
-  role_name              = "InstanceSchedulerLambdaFunctionPolicyVPCTest"
-  policy_json_attached   = true
-  policy_json            = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
+  source               = "../../"
+  application_name     = local.application_name
+  description          = "vpc attached test lambda"
+  package_type         = "Zip"
+  filename             = data.archive_file.lambda-zip
+  source_code_hash     = data.archive_file.lambda-zip.output_base64sha256
+  tags                 = local.tags
+  function_name        = "vpc-attached-lambda-function"
+  create_role          = true
+  role_name            = "InstanceSchedulerLambdaFunctionPolicyVPCTest"
+  policy_json_attached = true
+  policy_json          = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
 
   vpc_config {
-    subnet_ids           = aws_subnet.lambda_subnet_test.id
-    security_group_ids   = aws_security_group.lambda_security_group_test.id
+    subnet_ids         = aws_subnet.lambda_subnet_test.id
+    security_group_ids = aws_security_group.lambda_security_group_test.id
   }
 }
 
