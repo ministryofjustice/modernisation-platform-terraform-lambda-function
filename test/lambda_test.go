@@ -28,5 +28,3 @@ func TestLambdaCreation(t *testing.T) {
 	assert.Regexp(t, regexp.MustCompile(`^subnet-*`), checkSubnetId)
 	assert.Regexp(t, regexp.MustCompile(`^sg-*`), checkSecurityGroupId)
 }
-
-func
