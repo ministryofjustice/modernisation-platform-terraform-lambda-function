@@ -39,12 +39,15 @@ module "module_lambda_vpc_test" {
   source_code_hash       = data.archive_file.lambda-zip.output_base64sha256
   tags                   = local.tags
   function_name          = "vpc-attached-lambda-function"
-  vpc_subnet_ids         = aws_subnet.lambda_subnet_test.id
-  vpc_security_group_ids = aws_security_group.lambda_security_group_test.id
   create_role            = true
   role_name              = "InstanceSchedulerLambdaFunctionPolicyVPCTest"
   policy_json_attached   = true
   policy_json            = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
+
+  vpc_config {
+    subnet_ids           = aws_subnet.lambda_subnet_test.id
+    security_group_ids   = aws_security_group.lambda_security_group_test.id
+  }
 }
 
 resource "aws_cloudwatch_event_rule" "instance_scheduler_weekly_stop_at_night" {

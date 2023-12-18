@@ -11,9 +11,9 @@ output "result_code" {
 }
 
 output "security_group_id" {
-  value = module.module_lambda_vpc_test.vpc_security_group_ids
+  value = module.module_lambda_vpc_test.security_group_ids
 }
 
 output "subnet_id" {
-  value = module.module_lambda_vpc_test.vpc_subnet_ids
+  value = module.module_lambda_vpc_test.subnet_ids
 }

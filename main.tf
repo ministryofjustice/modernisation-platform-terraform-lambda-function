@@ -85,10 +85,10 @@ resource "aws_lambda_function" "this" { #tfsec:ignore:aws-lambda-enable-tracing
     }
   }
   dynamic "vpc_config" {
-    for_each = var.vpc_subnet_ids != null && var.vpc_security_group_ids != null ? [true] : []
+    for_each = var.subnet_ids != null && var.security_group_ids != null ? [true] : []
     content {
-      security_group_ids = var.vpc_security_group_ids
-      subnet_ids         = var.vpc_subnet_ids
+      security_group_ids = var.security_group_ids
+      subnet_ids         = var.subnet_ids
     }
   }
 }
