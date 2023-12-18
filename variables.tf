@@ -78,7 +78,7 @@ variable "environment_variables" {
 variable "package_type" {
   description = "The Lambda deployment package type. Valid options: Image or Zip"
   type        = string
-  default     = "Zip"
+  default     = "Image"
 }
 
 variable "image_uri" {
@@ -89,6 +89,12 @@ variable "image_uri" {
 
 variable "filename" {
   description = "The absolute path to an existing zip-file to use"
+  type        = string
+  default     = null
+}
+
+variable "source_code_hash" {
+  description = "Hash value of the archive file. Calculated externally. Use to trigger updates when source file is changed."
   type        = string
   default     = null
 }
