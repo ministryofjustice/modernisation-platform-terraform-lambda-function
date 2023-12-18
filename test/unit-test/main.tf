@@ -31,17 +31,17 @@ module "module_test" {
 }
 
 module "module_vpc_test" {
-  source                  = "../../"
-  application_name        = local.application_name
-  description             = "vpc attached test lambda"
-  tags                    = local.tags
-  function_name           = "vpc-attached-lambda-function"
-  vpc_subnet_ids          = aws_subnet.lambda_subnet_test.id
-  vpc_security_group_ids  = aws_security_group.lambda_security_group_test.id
-  create_role             = true
-  role_name               = "InstanceSchedulerLambdaFunctionPolicyVPCTest"
-  policy_json_attached    = true
-  policy_json             = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
+  source                 = "../../"
+  application_name       = local.application_name
+  description            = "vpc attached test lambda"
+  tags                   = local.tags
+  function_name          = "vpc-attached-lambda-function"
+  vpc_subnet_ids         = aws_subnet.lambda_subnet_test.id
+  vpc_security_group_ids = aws_security_group.lambda_security_group_test.id
+  create_role            = true
+  role_name              = "InstanceSchedulerLambdaFunctionPolicyVPCTest"
+  policy_json_attached   = true
+  policy_json            = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
 }
 
 resource "aws_cloudwatch_event_rule" "instance_scheduler_weekly_stop_at_night" {
@@ -172,11 +172,11 @@ resource "aws_lambda_invocation" "test_invocation" {
   })
 }
 
-resource "aws_vpc" "lambda_vpc_config_test"{
+resource "aws_vpc" "lambda_vpc_config_test" {
   cidr_block = "10.0.0.0/16"
 }
 
-resource "aws_subnet" "lambda_subnet_test"{
+resource "aws_subnet" "lambda_subnet_test" {
   vpc_id     = aws_vpc.lambda_vpc_config_test.id
   cidr_block = "10.0.1.0/24"
 }
@@ -184,12 +184,12 @@ resource "aws_subnet" "lambda_subnet_test"{
 resource "aws_security_group" "lambda_security_group_test" {
   name        = "lambda-vpc-test"
   description = "lambda attached to vpc test security group"
-  vpc_id = aws_vpc.lambda_vpc_config_test.id
+  vpc_id      = aws_vpc.lambda_vpc_config_test.id
 
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
   }
 
   tags = local.tags
