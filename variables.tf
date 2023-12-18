@@ -76,13 +76,19 @@ variable "environment_variables" {
 }
 
 variable "package_type" {
-  description = "The Lambda deployment package type. Valid options: Image"
+  description = "The Lambda deployment package type. Valid options: Image or Zip"
   type        = string
-  default     = "Image"
+  default     = "Zip"
 }
 
 variable "image_uri" {
   description = "The ECR image URI containing the function's deployment package."
+  type        = string
+  default     = null
+}
+
+variable "filename" {
+  description = "The absolute path to an existing zip-file to use"
   type        = string
   default     = null
 }

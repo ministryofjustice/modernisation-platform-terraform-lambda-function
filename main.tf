@@ -65,10 +65,12 @@ resource "aws_lambda_function" "this" { #tfsec:ignore:aws-lambda-enable-tracing
   description                    = var.description
   reserved_concurrent_executions = var.reserved_concurrent_executions
   image_uri                      = var.image_uri
+  filename                       = var.filename
   package_type                   = var.package_type
   role                           = var.create_role ? aws_iam_role.this[0].arn : var.lambda_role
   timeout                        = var.timeout
   memory_size                    = var.memory_size
+  
   dynamic "tracing_config" {
     for_each = var.tracing_mode != null ? [1] : []
     content {
