@@ -210,6 +210,6 @@ resource "aws_security_group" "lambda_security_group_test" {
 
 data "archive_file" "lambda-zip" {
   type        = "zip"
-  source_file = "test-lambda/test.py"
+  source_file = "test-zip/test.py"
   output_path = "test.zip"
 }
