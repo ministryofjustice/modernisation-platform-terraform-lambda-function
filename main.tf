@@ -66,6 +66,8 @@ resource "aws_lambda_function" "this" { #tfsec:ignore:aws-lambda-enable-tracing
   reserved_concurrent_executions = var.reserved_concurrent_executions
   image_uri                      = var.image_uri
   filename                       = var.filename
+  handler                        = var.handler
+  runtime                        = var.runtime
   source_code_hash               = var.source_code_hash
   package_type                   = var.package_type
   role                           = var.create_role ? aws_iam_role.this[0].arn : var.lambda_role
