@@ -15,10 +15,10 @@ output "lambda_function_name" {
 
 output "vpc_security_group_ids" {
   description = "The VPC security groups the lambda function has been deployed into"
-  value       = try(aws_lambda_function.this.security_group_ids, "")
+  value       = try(aws_lambda_function.this.vpc_config.security_group_ids, "")
 }
 
 output "vpc_subnet_ids" {
   description = "The vpc subnet(s) the Lambda function has been deployed into"
-  value       = try(aws_lambda_function.this.subnet_ids, "")
+  value       = try(aws_lambda_function.this.vpc_config.subnet_ids, "")
 }
