@@ -176,6 +176,15 @@ resource "aws_lambda_invocation" "test_invocation" {
   })
 }
 
+resource "aws_lambda_invocation" "test_invocation_vpc" {
+  function_name = module.lambda_function_in_vpc.lambda_function_name
+
+  input = jsonencode(
+    {
+      action = "Test"
+  })
+}
+
 resource "aws_vpc" "lambda_vpc_config_test" {
   cidr_block = "10.0.0.0/16"
 }
