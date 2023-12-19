@@ -37,6 +37,8 @@ module "lambda_function_in_vpc" {
   package_type         = "Zip"
   filename             = data.archive_file.lambda-zip.output_path
   source_code_hash     = data.archive_file.lambda-zip.output_base64sha256
+  handler              = "test.lambda_handler"
+  runtime              = "python3.8"
   tags                 = local.tags
   function_name        = "lambda-function-in-vpc-test"
   create_role          = true

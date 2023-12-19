@@ -99,6 +99,18 @@ variable "source_code_hash" {
   default     = null
 }
 
+variable "handler" {
+  description = "Lambda Function entrypoint in your code"
+  type        = string
+  default     = ""
+}
+
+variable "runtime" {
+  description = "Lambda function runtime"
+  type        = string
+  default     = ""
+}
+
 variable "timeout" {
   description = "The amount of time your Lambda Function has to run in seconds."
   type        = number
