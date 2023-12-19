@@ -35,7 +35,7 @@ module "lambda_function_in_vpc" {
   application_name     = local.application_name
   description          = "lambda function provisioned within a vpc test"
   package_type         = "Zip"
-  filename             = data.archive_file.lambda-zip
+  filename             = data.archive_file.lambda-zip.output_path
   source_code_hash     = data.archive_file.lambda-zip.output_base64sha256
   tags                 = local.tags
   function_name        = "lambda-function-in-vpc-test"
