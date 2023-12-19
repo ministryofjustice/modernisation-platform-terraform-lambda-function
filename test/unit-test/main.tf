@@ -42,9 +42,9 @@ module "lambda_function_in_vpc" {
   tags                 = local.tags
   function_name        = "lambda-function-in-vpc-test"
   create_role          = true
-  role_name            = "InstanceSchedulerLambdaFunctionPolicyInVPCTest"
+  role_name            = "LambdaFunctionInVPCTest"
   policy_json_attached = true
-  policy_json          = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
+  policy_json          = data.aws_iam_policy_document.AWSLambdaVPCAccessExecutionRole.json
 
   vpc_subnet_ids         = [data.aws_subnet.private-2a.id]
   vpc_security_group_ids = [aws_security_group.lambda_security_group_test.id]
@@ -82,6 +82,25 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_m
       action = "Start"
     }
   )
+}
+
+data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
+  statement {
+    sid       = "AWSLambdaVPCAccessExecutionRole"
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "ec2:CreateNetworkInterface",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DeleteNetworkInterface",
+      "ec2:AssignPrivateIpAddresses",
+      "ec2:UnassignPrivateIpAddresses",
+    ]
+  }
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
@@ -169,6 +188,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
   }
 }
 
+
 resource "aws_lambda_invocation" "test_invocation" {
   function_name = module.module_test.lambda_function_name
 
@@ -178,19 +198,6 @@ resource "aws_lambda_invocation" "test_invocation" {
   })
 }
 
-# resource "aws_lambda_invocation" "test_invocation_vpc" {
-#   function_name = module.lambda_function_in_vpc.lambda_function_name
-
-#   input = jsonencode(
-#     {
-#       action = "Test"
-#   })
-# }
-
-# resource "aws_vpc" "lambda_vpc_config_test" {
-#   cidr_block = "10.0.0.0/16"
-# }
-
 data "aws_vpc" "platforms-test" {
   id = "vpc-05900bb7e2e82391f"
 }
@@ -198,11 +205,6 @@ data "aws_vpc" "platforms-test" {
 data "aws_subnet" "private-2a" {
   id = "subnet-0e2a4d5f4b346c981"
 }
-
-# resource "aws_subnet" "lambda_subnet_test" {
-#   vpc_id     = aws_vpc.lambda_vpc_config_test.id
-#   cidr_block = "10.0.1.0/24"
-# }
 
 resource "aws_security_group" "lambda_security_group_test" {
   name        = "lambda-vpc-test"
