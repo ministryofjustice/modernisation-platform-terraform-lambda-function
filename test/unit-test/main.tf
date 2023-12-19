@@ -46,7 +46,7 @@ module "lambda_function_in_vpc" {
   policy_json_attached = true
   policy_json          = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
 
-  vpc_subnet_ids         = [aws_subnet.lambda_subnet_test.id]
+  vpc_subnet_ids         = [data.aws_subnet.private-2a.id]
   vpc_security_group_ids = [aws_security_group.lambda_security_group_test.id]
 }
 
@@ -187,19 +187,27 @@ resource "aws_lambda_invocation" "test_invocation" {
 #   })
 # }
 
-resource "aws_vpc" "lambda_vpc_config_test" {
-  cidr_block = "10.0.0.0/16"
+# resource "aws_vpc" "lambda_vpc_config_test" {
+#   cidr_block = "10.0.0.0/16"
+# }
+
+data "aws_vpc" "platforms-test" {
+  id = "vpc-05900bb7e2e82391f"
 }
 
-resource "aws_subnet" "lambda_subnet_test" {
-  vpc_id     = aws_vpc.lambda_vpc_config_test.id
-  cidr_block = "10.0.1.0/24"
+data "aws_subnet" "private-2a" {
+  id = "subnet-0e2a4d5f4b346c981"
 }
+
+# resource "aws_subnet" "lambda_subnet_test" {
+#   vpc_id     = aws_vpc.lambda_vpc_config_test.id
+#   cidr_block = "10.0.1.0/24"
+# }
 
 resource "aws_security_group" "lambda_security_group_test" {
   name        = "lambda-vpc-test"
   description = "lambda attached to vpc test security group"
-  vpc_id      = aws_vpc.lambda_vpc_config_test.id
+  vpc_id      = data.aws_vpc.platforms-test.id
 
   egress {
     from_port = 0
