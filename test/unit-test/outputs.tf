@@ -10,10 +10,10 @@ output "result_code" {
   value = jsondecode(aws_lambda_invocation.test_invocation.result)["statusCode"]
 }
 
-output "security_group_id" {
-  value = module.lambda_function_in_vpc.security_group_ids
+output "vpc_security_group_ids" {
+  value = module.lambda_function_in_vpc.vpc_security_group_ids
 }
 
-output "subnet_id" {
-  value = module.lambda_function_in_vpc.subnet_ids
+output "vpc_subnet_ids" {
+  value = module.lambda_function_in_vpc.vpc_subnet_ids
 }

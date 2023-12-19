@@ -44,8 +44,8 @@ module "lambda_function_in_vpc" {
   policy_json_attached = true
   policy_json          = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
 
-  subnet_ids         = aws_subnet.lambda_subnet_test.id
-  security_group_ids = aws_security_group.lambda_security_group_test.id
+  vpc_subnet_ids         = [aws_subnet.lambda_subnet_test.id]
+  vpc_security_group_ids = [aws_security_group.lambda_security_group_test.id]
 }
 
 resource "aws_cloudwatch_event_rule" "instance_scheduler_weekly_stop_at_night" {
