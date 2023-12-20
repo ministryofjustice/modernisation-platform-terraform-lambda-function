@@ -88,8 +88,6 @@ data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
   statement {
     sid       = "AWSLambdaVPCAccessExecutionRole"
     effect    = "Allow"
-    resources = ["*"]
-
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
@@ -99,6 +97,9 @@ data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
       "ec2:DeleteNetworkInterface",
       "ec2:AssignPrivateIpAddresses",
       "ec2:UnassignPrivateIpAddresses",
+    ]
+    resources = [
+      format("arn:aws:logs:eu-west-2:%s:aws/lambda/fake", data.aws_caller_identity.current.account_id)
     ]
   }
 }
@@ -212,6 +213,7 @@ resource "aws_security_group" "lambda_security_group_test" {
   vpc_id      = data.aws_vpc.platforms-test.id
 
   egress {
+    description = "Allow all outbound traffic"
     from_port = 0
     to_port   = 0
     protocol  = "-1"

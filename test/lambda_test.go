@@ -23,10 +23,13 @@ func TestLambdaCreation(t *testing.T) {
 	
 	checkSubnetId := terraform.Output(t, terraformOptions, "subnet_ids")
 	checkSecurityGroupId := terraform.Output(t, terraformOptions, "security_group_ids")
+	re := regexp.MustCompile(`[{}\[\]\s]`)
+	SubnetID = re.ReplaceAllString(checkSubnetID, "")
+	SecurityGroupID = re.ReplaceAllString(checkSecurityGroupID, "")
 
 	assert.Regexp(t, regexp.MustCompile(`^instance-scheduler-lambda-function*`), functionName)
 	assert.Regexp(t, regexp.MustCompile(`^200*`), resultCode)
 	
-	assert.Regexp(t, regexp.MustCompile(`^subnet-\w+$`), checkSubnetId)
-	assert.Regexp(t, regexp.MustCompile(`^sg-\d+$`), checkSecurityGroupId)
+	assert.Regexp(t, regexp.MustCompile(`^subnet-\w+$`), SubnetId)
+	assert.Regexp(t, regexp.MustCompile(`^sg-\d+$`), SecurityGroupId)
 }
