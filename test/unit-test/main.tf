@@ -86,8 +86,8 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_m
 
 data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
   statement {
-    sid       = "AWSLambdaVPCAccessExecutionRole"
-    effect    = "Allow"
+    sid    = "AWSLambdaVPCAccessExecutionRole"
+    effect = "Allow"
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
@@ -214,9 +214,9 @@ resource "aws_security_group" "lambda_security_group_test" {
 
   egress {
     description = "Allow all outbound traffic"
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
   }
 
   tags = local.tags
