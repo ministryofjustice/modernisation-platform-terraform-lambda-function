@@ -27,6 +27,6 @@ func TestLambdaCreation(t *testing.T) {
 	assert.Regexp(t, regexp.MustCompile(`^instance-scheduler-lambda-function*`), functionName)
 	assert.Regexp(t, regexp.MustCompile(`^200*`), resultCode)
 	
-	assert.Regexp(t, regexp.MustCompile(`^subnet-*`), checkSubnetId)
-	assert.Regexp(t, regexp.MustCompile(`^sg-*`), checkSecurityGroupId)
+	assert.Regexp(t, regexp.MustCompile(`^subnet-\w+$`), checkSubnetId)
+	assert.Regexp(t, regexp.MustCompile(`^sg-\d+$`), checkSecurityGroupId)
 }
