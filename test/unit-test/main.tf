@@ -98,9 +98,7 @@ data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
       "ec2:AssignPrivateIpAddresses",
       "ec2:UnassignPrivateIpAddresses",
     ]
-    resources = [
-      format("arn:aws:logs:eu-west-2:%s:aws/lambda/fake", data.aws_caller_identity.current.account_id)
-    ]
+    resources = "*"
   }
 }
 
