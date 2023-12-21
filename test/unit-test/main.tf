@@ -97,6 +97,7 @@ data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
       "ec2:DeleteNetworkInterface",
       "ec2:AssignPrivateIpAddresses",
       "ec2:UnassignPrivateIpAddresses",
+      "sts:AssumeRole",
     ]
     resources = [
       format("arn:aws:ec2:eu-west-2:%s:vpc/${data.aws_vpc.platforms-test.id}/*", data.aws_caller_identity.current.account_id)
