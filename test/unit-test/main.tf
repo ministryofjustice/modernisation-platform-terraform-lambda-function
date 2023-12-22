@@ -194,16 +194,16 @@ data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
       format("arn:aws:ec2:eu-west-2:%s:network-interface/*", data.aws_caller_identity.current.account_id)
     ]
   }
-  # statement {
-  #   sid    = "LambdaVPCAccess"
-  #   effect = "Allow"
-  #   actions = [
-  #     "sts:AssumeRole"
-  #   ]
-  #   resources = [
-  #     "arn:aws:iam::*:role/LambdaFunctionVPCAccess"
-  #   ]
-  # }
+  statement {
+    sid    = "AllowLambdaToAssumeRole"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = [
+      "arn:aws:iam::*:role/LambdaFunctionVPCAccess"
+    ]
+  }
   statement {
     sid    = "AllowLambdaToCreateLogGroup"
     effect = "Allow"
