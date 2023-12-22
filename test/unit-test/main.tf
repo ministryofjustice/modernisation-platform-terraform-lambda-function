@@ -173,59 +173,63 @@ module "lambda_function_in_vpc" {
   create_role          = true
   role_name            = "LambdaFunctionVPCAccess"
   policy_json_attached = true
-  policy_json          = data.aws_iam_policy_document.AWSLambdaVPCAccessExecutionRole.json
+  policy_json          = data.aws_iam_policy.lambda_vpc_policy.policy_json_attached
 
   vpc_subnet_ids         = [data.aws_subnet.private-2a.id]
   vpc_security_group_ids = [aws_security_group.lambda_security_group_test.id]
 }
 
-data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
-  statement {
-    sid    = "AWSLambdaVPCAccessExecutionRole"
-    effect = "Allow"
-    actions = [
-      "ec2:CreateNetworkInterface",
-      "ec2:DescribeNetworkInterfaces",
-      "ec2:DeleteNetworkInterface",
-      "ec2:AssignPrivateIpAddresses",
-      "ec2:UnassignPrivateIpAddresses",
-    ]
-    resources = [
-      format("arn:aws:ec2:eu-west-2:%s:network-interface/*", data.aws_caller_identity.current.account_id)
-    ]
-  }
-  statement {
-    sid    = "LambdaVPCAccess"
-    effect = "Allow"
-    actions = [
-      "sts:AssumeRole"
-    ]
-    resources = [
-      "arn:aws:iam::*:role/*"
-    ]
-  }
-  statement {
-    sid    = "AllowLambdaToCreateLogGroup"
-    effect = "Allow"
-    actions = [
-      "logs:CreateLogGroup"
-    ]
-    resources = [
-      format("arn:aws:logs:eu-west-2:%s:aws/lambda/fake2", data.aws_caller_identity.current.account_id)
-    ]
-  }
-  statement {
-    sid    = "AllowLambdaToWriteLogsToGroup"
-    effect = "Allow"
-    actions = [
-      "logs:CreateLogStream",
-      "logs:PutLogEvents"
-    ]
-    resources = [
-      format("arn:aws:logs:eu-west-2:%s:*", data.aws_caller_identity.current.account_id)
-    ]
-  }
+data "aws_iam_policy" "lambda_vpc_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
+
+# data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
+#   statement {
+#     sid    = "AWSLambdaVPCAccessExecutionRole"
+#     effect = "Allow"
+#     actions = [
+#       "ec2:CreateNetworkInterface",
+#       "ec2:DescribeNetworkInterfaces",
+#       "ec2:DeleteNetworkInterface",
+#       "ec2:AssignPrivateIpAddresses",
+#       "ec2:UnassignPrivateIpAddresses",
+#     ]
+#     resources = [
+#       format("arn:aws:ec2:eu-west-2:%s:network-interface/*", data.aws_caller_identity.current.account_id)
+#     ]
+#   }
+#   statement {
+#     sid    = "LambdaVPCAccess"
+#     effect = "Allow"
+#     actions = [
+#       "sts:AssumeRole"
+#     ]
+#     resources = [
+#       "arn:aws:iam::*:role/*"
+#     ]
+#   }
+#   statement {
+#     sid    = "AllowLambdaToCreateLogGroup"
+#     effect = "Allow"
+#     actions = [
+#       "logs:CreateLogGroup"
+#     ]
+#     resources = [
+#       format("arn:aws:logs:eu-west-2:%s:aws/lambda/fake2", data.aws_caller_identity.current.account_id)
+#     ]
+#   }
+#   statement {
+#     sid    = "AllowLambdaToWriteLogsToGroup"
+#     effect = "Allow"
+#     actions = [
+#       "logs:CreateLogStream",
+#       "logs:PutLogEvents"
+#     ]
+#     resources = [
+#       format("arn:aws:logs:eu-west-2:%s:*", data.aws_caller_identity.current.account_id)
+#     ]
+#   }
+# }
 
 data "aws_vpc" "platforms-test" {
   id = "vpc-05900bb7e2e82391f"
