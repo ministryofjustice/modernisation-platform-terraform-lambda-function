@@ -224,7 +224,7 @@ data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
     # resources = [
     #   format("arn:aws:ec2:eu-west-2:%s:network-interface/*", data.aws_caller_identity.current.account_id)
     # ]
-    resources = "*"
+    resources = ["*"]
   }
   statement {
     sid    = "AllowLambdaToCreateLogGroup"
