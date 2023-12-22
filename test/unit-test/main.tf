@@ -1,4 +1,4 @@
-
+# lambda module test with image package type
 module "module_test" {
   source                         = "../../"
   application_name               = local.application_name
@@ -28,26 +28,6 @@ module "module_test" {
     }
   }
 
-}
-
-module "lambda_function_in_vpc" {
-  source               = "../../"
-  application_name     = local.application_name
-  description          = "lambda function provisioned within a vpc test"
-  package_type         = "Zip"
-  filename             = data.archive_file.lambda-zip.output_path
-  source_code_hash     = data.archive_file.lambda-zip.output_base64sha256
-  handler              = "test.lambda_handler"
-  runtime              = "python3.8"
-  tags                 = local.tags
-  function_name        = "lambda-function-in-vpc-test"
-  create_role          = true
-  role_name            = "LambdaFunctionInVPCTest"
-  policy_json_attached = true
-  policy_json          = data.aws_iam_policy_document.AWSLambdaVPCAccessExecutionRole.json
-
-  vpc_subnet_ids         = [data.aws_subnet.private-2a.id]
-  vpc_security_group_ids = [aws_security_group.lambda_security_group_test.id]
 }
 
 resource "aws_cloudwatch_event_rule" "instance_scheduler_weekly_stop_at_night" {
@@ -82,27 +62,6 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_m
       action = "Start"
     }
   )
-}
-
-data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
-  statement {
-    sid    = "AWSLambdaVPCAccessExecutionRole"
-    effect = "Allow"
-    actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "ec2:CreateNetworkInterface",
-      "ec2:DescribeNetworkInterfaces",
-      "ec2:DeleteNetworkInterface",
-      "ec2:AssignPrivateIpAddresses",
-      "ec2:UnassignPrivateIpAddresses",
-      "sts:AssumeRole",
-    ]
-    resources = [
-      format("arn:aws:ec2:eu-west-2:%s:vpc/${data.aws_vpc.platforms-test.id}/*", data.aws_caller_identity.current.account_id)
-    ]
-  }
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
@@ -190,7 +149,6 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
   }
 }
 
-
 resource "aws_lambda_invocation" "test_invocation" {
   function_name = module.module_test.lambda_function_name
 
@@ -198,6 +156,75 @@ resource "aws_lambda_invocation" "test_invocation" {
     {
       action = "Test"
   })
+}
+
+# lambda module test with zip package type and vpc config
+module "lambda_function_in_vpc" {
+  source               = "../../"
+  application_name     = local.application_name
+  description          = "lambda function provisioned within a vpc test"
+  package_type         = "Zip"
+  filename             = data.archive_file.lambda-zip.output_path
+  source_code_hash     = data.archive_file.lambda-zip.output_base64sha256
+  handler              = "test.lambda_handler"
+  runtime              = "python3.8"
+  tags                 = local.tags
+  function_name        = "lambda-function-in-vpc-test"
+  create_role          = true
+  role_name            = "LambdaFunctionVPCAccess"
+  policy_json_attached = true
+  policy_json          = data.aws_iam_policy_document.AWSLambdaVPCAccessExecutionRole.json
+
+  vpc_subnet_ids         = [data.aws_subnet.private-2a.id]
+  vpc_security_group_ids = [aws_security_group.lambda_security_group_test.id]
+}
+
+data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
+  statement {
+    sid    = "AWSLambdaVPCAccessExecutionRole"
+    effect = "Allow"
+    actions = [
+      "ec2:CreateNetworkInterface",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DeleteNetworkInterface",
+      "ec2:AssignPrivateIpAddresses",
+      "ec2:UnassignPrivateIpAddresses",
+    ]
+    resources = [
+      format("arn:aws:ec2:eu-west-2:%s:network-interface/*", data.aws_caller_identity.current.account_id)
+    ]
+  }
+  # statement {
+  #   sid    = "LambdaVPCAccess"
+  #   effect = "Allow"
+  #   actions = [
+  #     "sts:AssumeRole"
+  #   ]
+  #   resources = [
+  #     "arn:aws:iam::*:role/LambdaFunctionVPCAccess"
+  #   ]
+  # }
+  statement {
+    sid    = "AllowLambdaToCreateLogGroup"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup"
+    ]
+    resources = [
+      format("arn:aws:logs:eu-west-2:%s:aws/lambda/fake2", data.aws_caller_identity.current.account_id)
+    ]
+  }
+  statement {
+    sid    = "AllowLambdaToWriteLogsToGroup"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+    resources = [
+      format("arn:aws:logs:eu-west-2:%s:*", data.aws_caller_identity.current.account_id)
+    ]
+  }
 }
 
 data "aws_vpc" "platforms-test" {
