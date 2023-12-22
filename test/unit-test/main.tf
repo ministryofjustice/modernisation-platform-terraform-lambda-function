@@ -198,13 +198,13 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
 }
 
 resource "aws_iam_role" "lambda-vpc-role" {
-  name = "LambdaFunctionVPCAccess"
-  tags =local.tags
+  name               = "LambdaFunctionVPCAccess"
+  tags               = local.tags
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "lambda-vpc-attachment" {
-  role = aws_iam_role.lambda-vpc-role.name
+  role       = aws_iam_role.lambda-vpc-role.name
   policy_arn = data.aws_iam_policy.lambda_vpc_policy.arn
 }
 
