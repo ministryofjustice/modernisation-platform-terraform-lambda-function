@@ -161,17 +161,17 @@ resource "aws_lambda_invocation" "test_invocation" {
 
 # lambda module test with zip package type and vpc config
 module "lambda_function_in_vpc" {
-  source               = "../../"
-  application_name     = local.application_name
-  description          = "lambda function provisioned within a vpc test"
-  package_type         = "Zip"
-  filename             = data.archive_file.lambda-zip.output_path
-  source_code_hash     = data.archive_file.lambda-zip.output_base64sha256
-  handler              = "test.lambda_handler"
-  runtime              = "python3.8"
-  tags                 = local.tags
-  function_name        = "lambda-function-in-vpc-test"
-  create_role          = true
+  source           = "../../"
+  application_name = local.application_name
+  description      = "lambda function provisioned within a vpc test"
+  package_type     = "Zip"
+  filename         = data.archive_file.lambda-zip.output_path
+  source_code_hash = data.archive_file.lambda-zip.output_base64sha256
+  handler          = "test.lambda_handler"
+  runtime          = "python3.8"
+  tags             = local.tags
+  function_name    = "lambda-function-in-vpc-test"
+  create_role      = true
   # lambda_role          = data.aws_iam_role.lambda-vpc-role.arn
   role_name            = "LambdaFunctionVPCAccess"
   policy_json_attached = true
