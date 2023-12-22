@@ -32,5 +32,5 @@ func TestLambdaCreation(t *testing.T) {
 	assert.Regexp(t, regexp.MustCompile(`^200*`), resultCode)
 	
 	assert.Regexp(t, regexp.MustCompile(`^subnet-\w+$`), subnetId)
-	assert.Regexp(t, regexp.MustCompile(`^sg-\d+$`), securityGroupId)
+	assert.Regexp(t, regexp.MustCompile(`^sg-\w+$`), securityGroupId)
 }
