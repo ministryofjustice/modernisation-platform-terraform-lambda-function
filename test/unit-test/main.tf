@@ -195,13 +195,13 @@ data "aws_iam_policy_document" "AWSLambdaVPCAccessExecutionRole" {
     ]
   }
   statement {
-    sid    = "AllowLambdaToAssumeRole"
+    sid    = "LambdaVPCAccess"
     effect = "Allow"
-    principal = {
-      service = "lambda.amazonaws.com"
-    }
     actions = [
       "sts:AssumeRole"
+    ]
+    resources = [
+      "arn:aws:iam::*:role/*"
     ]
   }
   statement {
