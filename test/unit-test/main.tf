@@ -80,7 +80,8 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
       "logs:CreateLogGroup"
     ]
     resources = [
-      format("arn:aws:logs:eu-west-2:%s:aws/lambda/%s", data.aws_caller_identity.current.account_id, module.module_test.lambda_function_name)
+      # format("arn:aws:logs:eu-west-2:%s:aws/lambda/%s", data.aws_caller_identity.current.account_id, module.module_test.lambda_function_name)
+      format("arn:aws:logs:eu-west-2:%s:aws/lambda/instance-scheduler-lambda-function", data.aws_caller_identity.current.account_id)
     ]
     # resources = [
     #   "${aws_cloudwatch_log_group.fake.arn}"
