@@ -220,7 +220,7 @@ data "aws_subnet" "private-2a" {
 }
 
 resource "aws_security_group" "lambda_security_group_test" {
-  name        = "lambda-vpc-test"
+  name        = "lambda-vpc-module-test"
   description = "lambda attached to vpc test security group"
   vpc_id      = data.aws_vpc.platforms-test.id
 
