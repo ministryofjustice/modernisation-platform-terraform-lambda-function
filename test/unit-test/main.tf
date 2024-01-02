@@ -64,12 +64,6 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_m
   )
 }
 
-# resource "aws_cloudwatch_log_group" "fake" {
-#   name = "Lambda/Fake"
-#   retention_in_days = 365
-#   kms_key_id = TODO.arn
-# }
-
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
   # checkov:skip=CKV_AWS_107: "Limiting required permissions"
@@ -80,12 +74,8 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
       "logs:CreateLogGroup"
     ]
     resources = [
-      # format("arn:aws:logs:eu-west-2:%s:aws/lambda/%s", data.aws_caller_identity.current.account_id, module.module_test.lambda_function_name)
-      format("arn:aws:logs:eu-west-2:%s:aws/lambda/instance-scheduler-lambda-function", data.aws_caller_identity.current.account_id)
+      format("arn:aws:logs:eu-west-2:%s:aws/lambda/fake", data.aws_caller_identity.current.account_id)
     ]
-    # resources = [
-    #   "${aws_cloudwatch_log_group.fake.arn}"
-    #   ]
   }
   statement {
     sid    = "AllowLambdaToWriteLogsToGroup"
@@ -238,4 +228,13 @@ data "archive_file" "lambda-zip" {
   type        = "zip"
   source_file = "test-zip/test.py"
   output_path = "test.zip"
+}
+
+resource "aws_lambda_invocation" "test_vpc_invocation" {
+  function_name = module.lambda_function_in_vpc.lambda_function_name
+
+  input = jsonencode(
+    {
+      action = "Test"
+  })
 }

@@ -17,3 +17,11 @@ output "security_group_ids" {
 output "subnet_ids" {
   value = module.lambda_function_in_vpc.vpc_subnet_ids
 }
+
+output "function_vpc_name" {
+  value = module.lambda_function_in_vpc.lambda_function_name
+}
+
+output "vpc_result_code" {
+  value = jsondecode(aws_lambda_invocation.test_vpc_invocation.result)["statusCode"]
+}
