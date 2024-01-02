@@ -81,8 +81,9 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
     #   # consider log group rename to function name or build log group as a separate resource 
     #   format("arn:aws:logs:eu-west-2:%s:aws/lambda/fake", data.aws_caller_identity.current.account_id)
     # ]
-    resources = aws_cloudwatch_log_group.fake.arn
-  }
+    resources = [
+      "${aws_cloudwatch_log_group.fake.arn}"
+    ]
   statement {
     sid    = "AllowLambdaToWriteLogsToGroup"
     effect = "Allow"
