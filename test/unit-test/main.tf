@@ -64,6 +64,10 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_m
   )
 }
 
+resource "aws_cloudwatch_log_group" "fake" {
+  name = "Lambda/Fake"
+}
+
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
   # checkov:skip=CKV_AWS_107: "Limiting required permissions"
@@ -73,10 +77,11 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
     actions = [
       "logs:CreateLogGroup"
     ]
-    resources = [
-      # consider log group rename to function name or build log group as a separate resource 
-      format("arn:aws:logs:eu-west-2:%s:aws/lambda/fake", data.aws_caller_identity.current.account_id)
-    ]
+    # resources = [
+    #   # consider log group rename to function name or build log group as a separate resource 
+    #   format("arn:aws:logs:eu-west-2:%s:aws/lambda/fake", data.aws_caller_identity.current.account_id)
+    # ]
+    resources = aws_cloudwatch_log_group.fake.arn
   }
   statement {
     sid    = "AllowLambdaToWriteLogsToGroup"
