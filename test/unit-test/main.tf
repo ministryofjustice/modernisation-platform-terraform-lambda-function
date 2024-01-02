@@ -64,9 +64,11 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_m
   )
 }
 
-resource "aws_cloudwatch_log_group" "fake" {
-  name = "Lambda/Fake"
-}
+# resource "aws_cloudwatch_log_group" "fake" {
+#   name = "Lambda/Fake"
+#   retention_in_days = 365
+#   kms_key_id = TODO.arn
+# }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
@@ -77,13 +79,12 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
     actions = [
       "logs:CreateLogGroup"
     ]
-    # resources = [
-    #   # consider log group rename to function name or build log group as a separate resource 
-    #   format("arn:aws:logs:eu-west-2:%s:aws/lambda/fake", data.aws_caller_identity.current.account_id)
-    # ]
     resources = [
-      "${aws_cloudwatch_log_group.fake.arn}"
+      format("arn:aws:logs:eu-west-2:%s:aws/lambda/${module.module_test.function_name}", data.aws_caller_identity.current.account_id)
     ]
+    # resources = [
+    #   "${aws_cloudwatch_log_group.fake.arn}"
+    #   ]
   }
   statement {
     sid    = "AllowLambdaToWriteLogsToGroup"
