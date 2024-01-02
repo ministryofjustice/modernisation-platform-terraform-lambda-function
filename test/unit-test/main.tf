@@ -83,7 +83,8 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
     # ]
     resources = [
       "${aws_cloudwatch_log_group.fake.arn}"
-    ]
+      ]
+  }
   statement {
     sid    = "AllowLambdaToWriteLogsToGroup"
     effect = "Allow"
