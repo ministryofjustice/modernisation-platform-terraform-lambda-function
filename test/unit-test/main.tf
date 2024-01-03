@@ -7,7 +7,7 @@ module "module_test" {
   role_name                      = format("InstanceSchedulerLambdaFunctionPolicy-%s", random_id.role.dec)
   policy_json_attached           = true
   policy_json                    = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
-  function_name                  = "instance-scheduler-lambda-function"
+  function_name                  = format("instance-scheduler-lambda-function-%s", random_id.lambda.dec)
   create_role                    = true
   reserved_concurrent_executions = 1
   environment_variables = {
@@ -28,10 +28,6 @@ module "module_test" {
     }
   }
 
-}
-
-resource "random_id" "role" {
-  byte_length = 1
 }
 
 resource "aws_cloudwatch_event_rule" "instance_scheduler_weekly_stop_at_night" {
@@ -173,7 +169,7 @@ module "lambda_function_in_vpc" {
   handler          = "test.lambda_handler"
   runtime          = "python3.8"
   tags             = local.tags
-  function_name    = "lambda-function-in-vpc-test"
+  function_name    = format("lambda-function-in-vpc-test-%s", random_id.lambda_name.dec)
   create_role      = false
   lambda_role      = aws_iam_role.lambda-vpc-role.arn
 
@@ -191,10 +187,6 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
       identifiers = ["lambda.amazonaws.com"]
     }
   }
-}
-
-resource "random_id" "role_name" {
-  byte_length = 1
 }
 
 resource "aws_iam_role" "lambda-vpc-role" {
@@ -215,10 +207,6 @@ data "aws_vpc" "platforms-test" {
 
 data "aws_subnet" "private-2a" {
   id = "subnet-0e2a4d5f4b346c981"
-}
-
-resource "random_id" "sg_name" {
-  byte_length = 1
 }
 
 resource "aws_security_group" "lambda_security_group_test" {
@@ -249,4 +237,26 @@ resource "aws_lambda_invocation" "test_vpc_invocation" {
     {
       action = "Test"
   })
+}
+
+# temporary random IDs 
+
+resource "random_id" "lambda_name" {
+  byte_length = 1
+}
+
+resource "random_id" "role" {
+  byte_length = 1
+}
+
+resource "random_id" "lambda" {
+  byte_length = 1
+}
+
+resource "random_id" "sg_name" {
+  byte_length = 1
+}
+
+resource "random_id" "role_name" {
+  byte_length = 1
 }
