@@ -4,7 +4,7 @@ module "module_test" {
   application_name               = local.application_name
   tags                           = local.tags
   description                    = "test lambda"
-  role_name                      = format("InstanceSchedulerLambdaFunctionPolicy-s%", random_id.role.dec)
+  role_name                      = format("InstanceSchedulerLambdaFunctionPolicy-%s", random_id.role.dec)
   policy_json_attached           = true
   policy_json                    = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
   function_name                  = "instance-scheduler-lambda-function"
@@ -222,7 +222,7 @@ resource "random_id" "sg_name" {
 }
 
 resource "aws_security_group" "lambda_security_group_test" {
-  name        = format("lambda-vpc-module-test-s%", random_id.sg_name.dec)
+  name        = format("lambda-vpc-module-test-%s", random_id.sg_name.dec)
   description = "lambda attached to vpc test security group"
   vpc_id      = data.aws_vpc.platforms-test.id
 
