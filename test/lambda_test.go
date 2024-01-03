@@ -37,5 +37,5 @@ func TestLambdaCreation(t *testing.T) {
 	assert.Regexp(t, regexp.MustCompile(`^sg-\w+$`), securityGroupId)
 
 	assert.Regexp(t, regexp.MustCompile(`^lambda-function-in-vpc-test*`), functionVpcName)
-	assert.Regexp(t, regexp.MustCompile(`^200*`), resultVpcCode)
+	assert.Regexp(t, regexp.MustCompile(`^"Hello from AWS Lambda using Python*`), resultVpcCode)
 }

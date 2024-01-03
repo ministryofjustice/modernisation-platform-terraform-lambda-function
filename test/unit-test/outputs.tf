@@ -23,5 +23,5 @@ output "function_vpc_name" {
 }
 
 output "vpc_result_code" {
-  value = jsondecode(aws_lambda_invocation.test_vpc_invocation.result)["statusCode"]
+  value = aws_lambda_invocation.test_vpc_invocation.result
 }
