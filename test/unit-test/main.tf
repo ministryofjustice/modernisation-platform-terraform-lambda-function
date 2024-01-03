@@ -4,7 +4,7 @@ module "module_test" {
   application_name               = local.application_name
   tags                           = local.tags
   description                    = "test lambda"
-  role_name                      = "InstanceSchedulerLambdaFunctionPolicy"
+  role_name                      = format("InstanceSchedulerLambdaFunctionPolicy-s%", random_id.role.dec)
   policy_json_attached           = true
   policy_json                    = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
   function_name                  = "instance-scheduler-lambda-function"
@@ -28,6 +28,10 @@ module "module_test" {
     }
   }
 
+}
+
+resource "random_id" "role" {
+  byte_length = 1
 }
 
 resource "aws_cloudwatch_event_rule" "instance_scheduler_weekly_stop_at_night" {
@@ -189,8 +193,12 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
   }
 }
 
+resource "random_id" "role_name" {
+  byte_length = 1
+}
+
 resource "aws_iam_role" "lambda-vpc-role" {
-  name = "LambdaFunctionVPCAccess"
+  name = format("LambdaFunctionVPCAccess-%s", random_id.role_name.dec)
   tags = local.tags
 
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
@@ -209,8 +217,12 @@ data "aws_subnet" "private-2a" {
   id = "subnet-0e2a4d5f4b346c981"
 }
 
+resource "random_id" "sg_name" {
+  byte_length = 1
+}
+
 resource "aws_security_group" "lambda_security_group_test" {
-  name        = "lambda-vpc-module-test"
+  name        = format("lambda-vpc-module-test-s%", random_id.sg_name.dec)
   description = "lambda attached to vpc test security group"
   vpc_id      = data.aws_vpc.platforms-test.id
 
