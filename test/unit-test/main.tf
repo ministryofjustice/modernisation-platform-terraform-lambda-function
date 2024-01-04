@@ -220,7 +220,7 @@ resource "aws_security_group" "lambda_security_group_test" {
     protocol    = "-1"
   }
 
-  tags        = local.tags
+  tags = local.tags
 }
 
 data "archive_file" "lambda-zip" {
