@@ -153,7 +153,7 @@ resource "aws_lambda_invocation" "test_invocation" {
   function_name = module.module_test.lambda_function_name
 
   input = jsonencode({
-      action = "Test"
+    action = "Test"
   })
 }
 
@@ -163,7 +163,7 @@ module "lambda_function_in_vpc" {
   application_name = local.application_name
   tags             = local.tags
   description      = "lambda function provisioned within a vpc test"
-  lambda_role      = aws_iam_role.lambda-vpc-role.arn 
+  lambda_role      = aws_iam_role.lambda-vpc-role.arn
   function_name    = format("lambda-function-in-vpc-test-%s", random_id.lambda_name.dec)
   create_role      = false
   package_type     = "Zip"
@@ -213,7 +213,7 @@ resource "aws_security_group" "lambda_security_group_test" {
   description = "lambda attached to vpc test security group"
   vpc_id      = data.aws_vpc.platforms-test.id
   tags        = local.tags
-  
+
   egress {
     description = "Allow all outbound traffic"
     from_port   = 0
@@ -232,7 +232,7 @@ resource "aws_lambda_invocation" "test_vpc_invocation" {
   function_name = module.lambda_function_in_vpc.lambda_function_name
 
   input = jsonencode({
-      action = "Test"
+    action = "Test"
   })
 }
 
