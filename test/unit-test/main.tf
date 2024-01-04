@@ -212,7 +212,6 @@ resource "aws_security_group" "lambda_security_group_test" {
   name        = format("lambda-vpc-module-test-%s", random_id.sg_name.dec)
   description = "lambda attached to vpc test security group"
   vpc_id      = data.aws_vpc.platforms-test.id
-  tags        = local.tags
 
   egress {
     description = "Allow all outbound traffic"
@@ -220,6 +219,8 @@ resource "aws_security_group" "lambda_security_group_test" {
     to_port     = 0
     protocol    = "-1"
   }
+
+  tags        = local.tags
 }
 
 data "archive_file" "lambda-zip" {
@@ -236,7 +237,7 @@ resource "aws_lambda_invocation" "test_vpc_invocation" {
   })
 }
 
-# temporary random IDs 
+# random IDs to allow for go unit test to run to completion via github action 
 
 resource "random_id" "lambda_name" {
   byte_length = 1
