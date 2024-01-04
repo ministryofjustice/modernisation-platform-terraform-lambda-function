@@ -65,10 +65,15 @@ resource "aws_lambda_function" "this" { #tfsec:ignore:aws-lambda-enable-tracing
   description                    = var.description
   reserved_concurrent_executions = var.reserved_concurrent_executions
   image_uri                      = var.image_uri
+  filename                       = var.filename
+  handler                        = var.handler
+  runtime                        = var.runtime
+  source_code_hash               = var.source_code_hash
   package_type                   = var.package_type
   role                           = var.create_role ? aws_iam_role.this[0].arn : var.lambda_role
   timeout                        = var.timeout
   memory_size                    = var.memory_size
+
   dynamic "tracing_config" {
     for_each = var.tracing_mode != null ? [1] : []
     content {
@@ -79,6 +84,13 @@ resource "aws_lambda_function" "this" { #tfsec:ignore:aws-lambda-enable-tracing
     for_each = length(keys(var.environment_variables)) > 0 ? [1] : []
     content {
       variables = var.environment_variables
+    }
+  }
+  dynamic "vpc_config" {
+    for_each = var.vpc_subnet_ids != null && var.vpc_security_group_ids != null ? [true] : []
+    content {
+      security_group_ids = var.vpc_security_group_ids
+      subnet_ids         = var.vpc_subnet_ids
     }
   }
 }

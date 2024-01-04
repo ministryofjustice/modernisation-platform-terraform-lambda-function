@@ -1,13 +1,13 @@
-
+# lambda module test with image package type
 module "module_test" {
   source                         = "../../"
   application_name               = local.application_name
   tags                           = local.tags
   description                    = "test lambda"
-  role_name                      = "InstanceSchedulerLambdaFunctionPolicy"
+  role_name                      = format("InstanceSchedulerLambdaFunctionPolicy-%s", random_id.role.dec)
   policy_json_attached           = true
   policy_json                    = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
-  function_name                  = "instance-scheduler-lambda-function"
+  function_name                  = format("instance-scheduler-lambda-function-%s", random_id.lambda.dec)
   create_role                    = true
   reserved_concurrent_executions = 1
   environment_variables = {
@@ -152,8 +152,109 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
 resource "aws_lambda_invocation" "test_invocation" {
   function_name = module.module_test.lambda_function_name
 
-  input = jsonencode(
-    {
-      action = "Test"
+  input = jsonencode({
+    action = "Test"
   })
+}
+
+# lambda module test with zip package type and vpc config
+module "lambda_function_in_vpc" {
+  source           = "../../"
+  application_name = local.application_name
+  tags             = local.tags
+  description      = "lambda function provisioned within a vpc test"
+  lambda_role      = aws_iam_role.lambda-vpc-role.arn
+  function_name    = format("lambda-function-in-vpc-test-%s", random_id.lambda_name.dec)
+  create_role      = false
+  package_type     = "Zip"
+  filename         = data.archive_file.lambda-zip.output_path
+  source_code_hash = data.archive_file.lambda-zip.output_base64sha256
+  handler          = "test.lambda_handler"
+  runtime          = "python3.8"
+
+  vpc_subnet_ids         = [data.aws_subnet.private-2a.id]
+  vpc_security_group_ids = [aws_security_group.lambda_security_group_test.id]
+}
+
+data "aws_iam_policy_document" "lambda_assume_role_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "lambda-vpc-role" {
+  name = format("LambdaFunctionVPCAccess-%s", random_id.role_name.dec)
+  tags = local.tags
+
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "lambda-vpc-attachment" {
+  role       = aws_iam_role.lambda-vpc-role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+
+data "aws_vpc" "platforms-test" {
+  id = "vpc-05900bb7e2e82391f"
+}
+
+data "aws_subnet" "private-2a" {
+  id = "subnet-0e2a4d5f4b346c981"
+}
+
+resource "aws_security_group" "lambda_security_group_test" {
+  name        = format("lambda-vpc-module-test-%s", random_id.sg_name.dec)
+  description = "lambda attached to vpc test security group"
+  vpc_id      = data.aws_vpc.platforms-test.id
+
+  egress {
+    description = "Allow all outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+  }
+
+  tags = local.tags
+}
+
+data "archive_file" "lambda-zip" {
+  type        = "zip"
+  source_file = "test-zip/test.py"
+  output_path = "test.zip"
+}
+
+resource "aws_lambda_invocation" "test_vpc_invocation" {
+  function_name = module.lambda_function_in_vpc.lambda_function_name
+
+  input = jsonencode({
+    action = "Test"
+  })
+}
+
+# random IDs to allow for go unit test to run to completion via github action 
+
+resource "random_id" "lambda_name" {
+  byte_length = 1
+}
+
+resource "random_id" "role" {
+  byte_length = 1
+}
+
+resource "random_id" "lambda" {
+  byte_length = 1
+}
+
+resource "random_id" "sg_name" {
+  byte_length = 1
+}
+
+resource "random_id" "role_name" {
+  byte_length = 1
 }

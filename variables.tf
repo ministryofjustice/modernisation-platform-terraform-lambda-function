@@ -76,13 +76,37 @@ variable "environment_variables" {
 }
 
 variable "package_type" {
-  description = "The Lambda deployment package type. Valid options: Image"
+  description = "The Lambda deployment package type. Valid options: Image or Zip"
   type        = string
   default     = "Image"
 }
 
 variable "image_uri" {
   description = "The ECR image URI containing the function's deployment package."
+  type        = string
+  default     = null
+}
+
+variable "filename" {
+  description = "The absolute path to an existing zip-file to use"
+  type        = string
+  default     = null
+}
+
+variable "source_code_hash" {
+  description = "Hash value of the archive file. Calculated externally. Use to trigger updates when source file is changed."
+  type        = string
+  default     = null
+}
+
+variable "handler" {
+  description = "Lambda Function entrypoint in your code"
+  type        = string
+  default     = null
+}
+
+variable "runtime" {
+  description = "Lambda function runtime"
   type        = string
   default     = null
 }
@@ -137,4 +161,16 @@ variable "sns_topic_on_success" {
   description = "SNS topic arn for the lambda's destination on success."
   type        = string
   default     = ""
+}
+
+variable "vpc_subnet_ids" {
+  description = "List of subnet ids when Lambda Function should run in the VPC. Usually private or intra subnets."
+  type        = list(string)
+  default     = null
+}
+
+variable "vpc_security_group_ids" {
+  description = "List of security group ids when Lambda Function should run in the VPC."
+  type        = list(string)
+  default     = null
 }
