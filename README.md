@@ -84,11 +84,13 @@ No modules.
 | <a name="input_create_role"></a> [create\_role](#input\_create\_role) | Controls whether IAM role for Lambda Function should be created | `bool` | `true` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description of your Lambda Function (or Layer) | `string` | `""` | no |
 | <a name="input_environment_variables"></a> [environment\_variables](#input\_environment\_variables) | A map that defines environment variables for the Lambda Function. | `map(string)` | `{}` | no |
+| <a name="input_filename"></a> [filename](#input\_filename) | The absolute path to an existing zip-file to use | `string` | `null` | no |
 | <a name="input_function_name"></a> [function\_name](#input\_function\_name) | A unique name for your Lambda Function | `string` | `""` | no |
+| <a name="input_handler"></a> [handler](#input\_handler) | Lambda Function entrypoint in your code | `string` | `null` | no |
 | <a name="input_image_uri"></a> [image\_uri](#input\_image\_uri) | The ECR image URI containing the function's deployment package. | `string` | `null` | no |
 | <a name="input_lambda_role"></a> [lambda\_role](#input\_lambda\_role) | IAM role ARN attached to the Lambda Function. This governs both who / what can invoke your Lambda Function, as well as what resources our Lambda Function has access to. See Lambda Permission Model for more details. | `string` | `""` | no |
 | <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | Amount of memory in MB your Lambda Function can use at runtime | `number` | `128` | no |
-| <a name="input_package_type"></a> [package\_type](#input\_package\_type) | The Lambda deployment package type. Valid options: Image | `string` | `"Image"` | no |
+| <a name="input_package_type"></a> [package\_type](#input\_package\_type) | The Lambda deployment package type. Valid options: Image or Zip | `string` | `"Image"` | no |
 | <a name="input_policy_arns"></a> [policy\_arns](#input\_policy\_arns) | List of policy statements ARN to attach to Lambda Function role | `list(string)` | `[]` | no |
 | <a name="input_policy_json"></a> [policy\_json](#input\_policy\_json) | An policy document as JSON to attach to the Lambda Function role | `string` | `null` | no |
 | <a name="input_policy_json_attached"></a> [policy\_json\_attached](#input\_policy\_json\_attached) | A json policy document is being passed into the module | `bool` | `false` | no |
@@ -96,11 +98,15 @@ No modules.
 | <a name="input_reserved_concurrent_executions"></a> [reserved\_concurrent\_executions](#input\_reserved\_concurrent\_executions) | The amount of reserved concurrent executions for this Lambda Function. A value of 0 disables Lambda Function from being triggered and -1 removes any concurrency limitations. Defaults to Unreserved Concurrency Limits -1. | `number` | `-1` | no |
 | <a name="input_role_description"></a> [role\_description](#input\_role\_description) | Description of IAM role to use for Lambda Function | `string` | `null` | no |
 | <a name="input_role_name"></a> [role\_name](#input\_role\_name) | Name of IAM role to use for Lambda Function | `string` | `null` | no |
+| <a name="input_runtime"></a> [runtime](#input\_runtime) | Lambda function runtime | `string` | `null` | no |
 | <a name="input_sns_topic_on_failure"></a> [sns\_topic\_on\_failure](#input\_sns\_topic\_on\_failure) | SNS topic arn for the lambda's destination on failure. | `string` | `""` | no |
 | <a name="input_sns_topic_on_success"></a> [sns\_topic\_on\_success](#input\_sns\_topic\_on\_success) | SNS topic arn for the lambda's destination on success. | `string` | `""` | no |
+| <a name="input_source_code_hash"></a> [source\_code\_hash](#input\_source\_code\_hash) | Hash value of the archive file. Calculated externally. Use to trigger updates when source file is changed. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Common tags to be used by all resources | `map(string)` | n/a | yes |
 | <a name="input_timeout"></a> [timeout](#input\_timeout) | The amount of time your Lambda Function has to run in seconds. | `number` | `3` | no |
 | <a name="input_tracing_mode"></a> [tracing\_mode](#input\_tracing\_mode) | Tracing mode of the Lambda Function. Valid value can be either PassThrough or Active. | `string` | `null` | no |
+| <a name="input_vpc_security_group_ids"></a> [vpc\_security\_group\_ids](#input\_vpc\_security\_group\_ids) | List of security group ids when Lambda Function should run in the VPC. | `list(string)` | `null` | no |
+| <a name="input_vpc_subnet_ids"></a> [vpc\_subnet\_ids](#input\_vpc\_subnet\_ids) | List of subnet ids when Lambda Function should run in the VPC. Usually private or intra subnets. | `list(string)` | `null` | no |
 
 ## Outputs
 
@@ -109,4 +115,6 @@ No modules.
 | <a name="output_lambda_function_arn"></a> [lambda\_function\_arn](#output\_lambda\_function\_arn) | The ARN of the Lambda Function |
 | <a name="output_lambda_function_invoke_arn"></a> [lambda\_function\_invoke\_arn](#output\_lambda\_function\_invoke\_arn) | The invoke ARN of the Lambda Function |
 | <a name="output_lambda_function_name"></a> [lambda\_function\_name](#output\_lambda\_function\_name) | The Name of the Lambda Function |
+| <a name="output_vpc_security_group_ids"></a> [vpc\_security\_group\_ids](#output\_vpc\_security\_group\_ids) | The VPC security groups the lambda function has been deployed into |
+| <a name="output_vpc_subnet_ids"></a> [vpc\_subnet\_ids](#output\_vpc\_subnet\_ids) | The vpc subnet(s) the Lambda function has been deployed into |
 <!-- END_TF_DOCS -->
