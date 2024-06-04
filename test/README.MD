@@ -21,7 +21,7 @@ Run the tests from within the `test` directory using the `testing-ci` user crede
 Get the credentials from secrets manager using the helper script in the modernisation-platform main repo.
 
 ```
-cd modernisation-platform/scripts/internal/
+cd modernisation-platform/scripts/internal/get-testing-ci-user-creds
 aws-vault exec mod -- go run get_testing_creds.go
 ```
 
@@ -38,14 +38,14 @@ go test -v
 Upon successful run, you should see an output similar to the below
 
 ```
-TestS3Creation 2022-06-08T14:29:22+01:00 logger.go:66: Destroy complete! Resources: 3 destroyed.
-TestS3Creation 2022-06-08T14:29:22+01:00 logger.go:66: 
---- PASS: TestS3Creation (20.60s)
+TestLambdaCreation 2024-05-24T16:05:07+01:00 logger.go:66: Destroy complete! Resources: 29 destroyed.
+TestLambdaCreation 2024-05-24T16:05:07+01:00 logger.go:66:
+--- PASS: TestLambdaCreation (509.19s)
 PASS
-ok      github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role        20.897s
+ok  	github.com/ministryofjustice/modernisation-platform-terraform-lambda-function	 509.522s
 ```
 
 ## References
 
 1. https://terratest.gruntwork.io/docs/getting-started/quick-start/
-2. https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role/blob/main/.github/workflows/go-terratest.yml
+2. https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-function/blob/main/.github/workflows/go-terratest.yml
