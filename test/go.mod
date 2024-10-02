@@ -2,8 +2,6 @@ module github.com/ministryofjustice/modernisation-platform-terraform-lambda-func
 
 go 1.23
 
-toolchain go1.23.1
-
 require (
 	github.com/gruntwork-io/terratest v0.47.2
 	github.com/stretchr/testify v1.9.0
