@@ -1,4 +1,4 @@
-module "s3-bucket" {                                                                             #tfsec:ignore:aws-s3-enable-versioning
+module "s3-bucket" {                                                                                                              #tfsec:ignore:aws-s3-enable-versioning
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=52a40b0dd18aaef0d7c5565d93cc8997aad79636" # Hash for v8.2.0
 
   bucket_prefix      = "data-platform-products-${local.environment}"
