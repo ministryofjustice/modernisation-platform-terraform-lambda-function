@@ -56,7 +56,8 @@ resource "aws_iam_role_policy_attachment" "policy_arns" {
   policy_arn = var.policy_arns[count.index]
 }
 
-resource "aws_lambda_function" "this" { #tfsec:ignore:aws-lambda-enable-tracing
+resource "aws_lambda_function" "this" {
+  #checkov:skip=CKV_AWS_50: "X-ray tracing is not required"
   #checkov:skip=CKV_AWS_116
   #checkov:skip=CKV_AWS_117
   #checkov:skip=CKV_AWS_272 "Code signing not required"

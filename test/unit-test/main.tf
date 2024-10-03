@@ -144,7 +144,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
     ]
     resources = [
       "${module.s3-bucket.bucket.arn}/*",
-      "${module.s3-bucket.bucket.arn}"
+      module.s3-bucket.bucket.arn
     ]
   }
 }
@@ -170,7 +170,7 @@ module "lambda_function_in_vpc" {
   filename         = data.archive_file.lambda-zip.output_path
   source_code_hash = data.archive_file.lambda-zip.output_base64sha256
   handler          = "test.lambda_handler"
-  runtime          = "python3.8"
+  runtime          = "python3.12"
 
   vpc_subnet_ids         = [data.aws_subnet.private-2a.id]
   vpc_security_group_ids = [aws_security_group.lambda_security_group_test.id]
