@@ -118,8 +118,8 @@ No modules.
 | <a name="output_vpc_subnet_ids"></a> [vpc\_subnet\_ids](#output\_vpc\_subnet\_ids) | The vpc subnet(s) the Lambda function has been deployed into |
 <!-- END_TF_DOCS -->
 
-[Standards Link]: https://github-community.cloud-platform.service.justice.gov.uk/repository-standards/modernisation-platform-terraform-lambda-function "Repo standards badge."
-[Standards Icon]: https://github-community.cloud-platform.service.justice.gov.uk/repository-standards/api/modernisation-platform-terraform-lambda-function/badge
+[Standards Link]: https://github-community.service.justice.gov.uk/repository-standards/modernisation-platform-terraform-lambda-function "Repo standards badge."
+[Standards Icon]: https://github-community.service.justice.gov.uk/repository-standards/api/modernisation-platform-terraform-lambda-function/badge
 [Format Code Icon]: https://img.shields.io/github/actions/workflow/status/ministryofjustice/modernisation-platform-terraform-lambda-function/format-code.yml?labelColor=231f20&style=for-the-badge&label=Formate%20Code
 [Format Code Link]: https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-function/actions/workflows/format-code.yml
 [Scorecards Icon]: https://img.shields.io/github/actions/workflow/status/ministryofjustice/modernisation-platform-terraform-lambda-function/scorecards.yml?branch=main&labelColor=231f20&style=for-the-badge&label=Scorecards
