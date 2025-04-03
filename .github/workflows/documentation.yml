@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - main
-permissions: {}
+
 jobs:
   docs:
     permissions:
@@ -22,4 +22,9 @@ jobs:
         working-dir: .
         output-file: README.md
         output-method: inject
-        git-push: "true"
+        git-push: "false"
+
+    - name: Run Signed Commit Action
+      uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@ec324eeaf046fd2b8332c4cabf81dc1e1c36b98e # branch / pr check
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
