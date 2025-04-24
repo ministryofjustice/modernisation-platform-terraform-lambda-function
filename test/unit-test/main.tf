@@ -209,6 +209,7 @@ data "aws_subnet" "private-2a" {
 }
 
 resource "aws_security_group" "lambda_security_group_test" {
+  # checkov:skip=CKV_AWS_382: "Only used for testing so minimal risk"
   name        = format("lambda-vpc-module-test-%s", random_id.sg_name.dec)
   description = "lambda attached to vpc test security group"
   vpc_id      = data.aws_vpc.platforms-test.id
