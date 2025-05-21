@@ -25,6 +25,6 @@ jobs:
         git-push: "false"
 
     - name: Run Signed Commit Action
-      uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@ec324eeaf046fd2b8332c4cabf81dc1e1c36b98e # branch / pr check
+      uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@ee0701cae8ac3179d7989aca0bfabe99262a8083 # slurpfile testing
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
